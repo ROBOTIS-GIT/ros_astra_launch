@@ -1,20 +1,20 @@
-<!-- Entry point for using OpenNI2 devices (if you still use tf_prefix) -->
+<!-- Entry point for using OpenNI2 devices -->
 <launch>
 
   <!-- "camera" should uniquely identify the device. All topics are pushed down
        into the "camera" namespace, and it is prepended to tf frame ids. -->
   <arg name="camera" default="camera" />
-  <arg name="tf_prefix" default="" />
-  <arg name="rgb_frame_id"   default="$(arg tf_prefix)/$(arg camera)_rgb_optical_frame" />
-  <arg name="depth_frame_id" default="$(arg tf_prefix)/$(arg camera)_depth_optical_frame" />
+  <arg name="rgb_frame_id"   default="$(arg camera)_rgb_optical_frame" />
+  <arg name="depth_frame_id" default="$(arg camera)_depth_optical_frame" />
 
   <!-- device_id can have the following formats:
-         "#1"  : the first device found
-         "2@X" : the Xth device on USB bus 2 -->
+         "#n"            : the nth device found, starts from 1
+         "2@n"           : the nth device on USB bus 2, n starts from 1
+         "2bc5/0401@1/6" : uri in format <vendor ID>/<product ID>@<bus number>/<device number>
+         "15120410023"   : serial number -->
   <arg name="device_id" default="#1" />
   <arg name="bootorder" default="0" />
   <arg name="devnums" default="1" />
-
 
   <!-- By default, calibrations are stored to file://${ROS_HOME}/camera_info/${NAME}.yaml,
        where ${NAME} is of the form "[rgb|depth]_[serial#]", e.g. "depth_B00367707227042B".
@@ -41,7 +41,7 @@
   <arg name="load_driver" default="true" />
   <arg name="publish_tf" default="true" />
   <!-- Processing Modules -->
-  <arg name="rgb_processing"                  default="true"  />
+  <arg name="rgb_processing"                  default="false"  />
   <arg name="debayer_processing"              default="false" />
   <arg name="ir_processing"                   default="false" />
   <arg name="depth_processing"                default="true" />
@@ -116,7 +116,6 @@
   <include if="$(arg publish_tf)"
 	   file="$(find astra_launch)/launch/includes/astra_frames.launch">
     <arg name="camera" value="$(arg camera)" />
-    <arg name="tf_prefix" value="$(arg tf_prefix)" />
   </include>
 
 </launch>
