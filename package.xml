@@ -16,5 +16,6 @@
   <run_depend>nodelet</run_depend>
   <run_depend>astra_camera</run_depend>
   <run_depend>tf</run_depend>
+  <run_depend>libuvc_camera</run_depend>
 
 </package>
